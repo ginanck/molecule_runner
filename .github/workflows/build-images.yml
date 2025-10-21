@@ -147,11 +147,9 @@ jobs:
         with:
           images: ${{ env.GITHUB_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
             type=raw,value=python${{ matrix.python_version }}-${{ matrix.ansible_full_version }}-{{date 'YYYYMMDD-HHmmss'}}
             type=raw,value=python${{ matrix.python_version }}-${{ matrix.ansible_full_version }}-latest
             type=raw,value=python${{ matrix.python_version }}-${{ matrix.ansible_full_version }}
-            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Copy appropriate requirements file to build context
         run: |
