@@ -40,7 +40,7 @@ RUN addgroup -g 1000 ansible \
 
 # Switch to ansible user and install essential collections
 USER ansible
-RUN ansible-galaxy collection install git+https://github.com/ansible-collections/community.docker.git,4.8.1
+RUN ansible-galaxy collection install git+https://github.com/ansible-collections/community.docker.git,4.8.1 --no-deps
 
 # Set working directory and switch back to root for GitHub Actions compatibility
 WORKDIR /workspace
