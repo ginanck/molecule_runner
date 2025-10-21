@@ -16,7 +16,7 @@ All images are based on Alpine Linux for minimal size and maximum efficiency.
 
 | Python Version | Ansible Version | Docker Tags |
 |---------------|----------------|-------------------------------------------------------------------|
-| 3.12          | 2.15.13        | `latest`, `python3.12-2.15.13-latest`, `python3.12-2.15.13`       |
+| 3.12          | 2.15.13        | `python3.12-2.15.13-latest`, `python3.12-2.15.13`, `latest`       |
 | 3.12          | 2.14.18        | `python3.12-2.14.18-latest`, `python3.12-2.14.18`                 |
 | 3.11          | 2.13.13        | `python3.11-2.13.13-latest`, `python3.11-2.13.13`                 |
 | 3.10          | 2.12.10        | `python3.10-2.12.10-latest`, `python3.10-2.12.10`                 |
