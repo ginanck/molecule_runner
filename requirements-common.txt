@@ -1,21 +1,15 @@
-# Ansible ecosystem packages (versions controlled per Python version via ansible-core pin)
+# Minimal Ansible ecosystem packages for Molecule testing
+# Core Ansible and Molecule tools
 ansible-compat
 ansible-lint
 flake8
 molecule
 molecule-docker
-molecule-podman
-docker
 
-# Mandatory for ansible-core
-cryptography
-importlib-resources
-jinja2
-packaging
-PyYAML
-resolvelib
-cffi
-typing-extensions
-MarkupSafe
-pycparser
-netaddr
+# Essential Python packages for Ansible
+# Note: cryptography, PyYAML, jinja2, packaging installed via Alpine packages
+
+# Docker support
+docker
+requests
+urllib3
