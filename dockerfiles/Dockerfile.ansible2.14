@@ -1,9 +1,7 @@
 FROM python:3.12-alpine3.18
 
-LABEL org.opencontainers.image.source https://github.com/ginanck/molecule_runner
+LABEL org.opencontainers.image.source=https://github.com/ginanck/molecule_runner
 LABEL org.opencontainers.image.description="Ultra-lightweight Molecule testing environment with Python 3.12 and Ansible 2.14.18"
-LABEL python.version="3.12"
-LABEL ansible.version="2.14.18"
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
