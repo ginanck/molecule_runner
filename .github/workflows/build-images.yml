@@ -163,7 +163,7 @@ jobs:
           tags: |
             ${{ matrix.tags }}
           labels: |
-            org.opencontainers.image.source=molecule-runner
+            org.opencontainers.image.source=https://github.com/ginanck/molecule_runner
             org.opencontainers.image.description=Alpine-based Docker images for Ansible Molecule testing
 
       - name: Copy appropriate requirements file to build context
