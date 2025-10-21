@@ -3,6 +3,7 @@
 ansible-compat
 ansible-lint
 flake8
+yamllint
 molecule
 molecule-docker
 
