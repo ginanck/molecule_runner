@@ -162,6 +162,13 @@ jobs:
           images: ${{ env.GITHUB_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}
           tags: |
             ${{ matrix.tags }}
+          labels: |
+            org.opencontainers.image.title=molecule-runner
+            org.opencontainers.image.description=Alpine-based Docker images for Ansible Molecule testing
+            repository=${{ github.repository }}
+            owner=${{ github.repository_owner }}
+            ansible.version=${{ matrix.ansible_full_version }}
+            python.version=${{ matrix.python_version }}
 
       - name: Copy appropriate requirements file to build context
         run: |
