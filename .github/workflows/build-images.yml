@@ -36,13 +36,33 @@ permissions:
 jobs:
   # Build stage for PRs - builds only, no push
   build-pr:
-    name: Build PR - Python ${{ matrix.python_version }}
+    name: Build PR - Ansible ${{ matrix.ansible_version }} (Python ${{ matrix.python_version }})
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     strategy:
       fail-fast: false
       matrix:
-        python_version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+        include:
+          - ansible_version: '2.11'
+            ansible_full_version: '2.11.12'
+            python_version: '3.9'
+            requirements_file: '3.8'
+          - ansible_version: '2.12'
+            ansible_full_version: '2.12.10'
+            python_version: '3.10'
+            requirements_file: '3.9'
+          - ansible_version: '2.13'
+            ansible_full_version: '2.13.13'
+            python_version: '3.11'
+            requirements_file: '3.10'
+          - ansible_version: '2.14'
+            ansible_full_version: '2.14.18'
+            python_version: '3.12'
+            requirements_file: '3.11'
+          - ansible_version: '2.15'
+            ansible_full_version: '2.15.13'
+            python_version: '3.12'
+            requirements_file: '3.12'
 
     steps:
       - name: Checkout repository
@@ -58,17 +78,17 @@ jobs:
           images: ${{ env.GITHUB_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=pr
-            type=raw,value=python${{ matrix.python_version }}-pr-{{sha}}
+            type=raw,value=python${{ matrix.python_version }}-${{ matrix.ansible_full_version }}-pr-{{sha}}
 
       - name: Copy appropriate requirements file to build context
         run: |
-          cat requirements-${{ matrix.python_version }}.txt requirements-common.txt > requirements.txt
+          cat requirements-${{ matrix.requirements_file }}.txt requirements-common.txt > requirements.txt
 
       - name: Build Docker image (PR - No Push)
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./dockerfiles/Dockerfile.python${{ matrix.python_version }}
+          file: ./dockerfiles/Dockerfile.ansible${{ matrix.ansible_version }}
           platforms: linux/amd64
           push: false
           load: true
@@ -79,13 +99,33 @@ jobs:
 
   # Build and push stage for master branch merges
   build-and-push:
-    name: Build & Push - Python ${{ matrix.python_version }}
+    name: Build & Push - Ansible ${{ matrix.ansible_version }} (Python ${{ matrix.python_version }})
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.force_push)
     strategy:
       fail-fast: false
       matrix:
-        python_version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+        include:
+          - ansible_version: '2.11'
+            ansible_full_version: '2.11.12'
+            python_version: '3.9'
+            requirements_file: '3.8'
+          - ansible_version: '2.12'
+            ansible_full_version: '2.12.10'
+            python_version: '3.10'
+            requirements_file: '3.9'
+          - ansible_version: '2.13'
+            ansible_full_version: '2.13.13'
+            python_version: '3.11'
+            requirements_file: '3.10'
+          - ansible_version: '2.14'
+            ansible_full_version: '2.14.18'
+            python_version: '3.12'
+            requirements_file: '3.11'
+          - ansible_version: '2.15'
+            ansible_full_version: '2.15.13'
+            python_version: '3.12'
+            requirements_file: '3.12'
 
     steps:
       - name: Checkout repository
@@ -108,20 +148,20 @@ jobs:
           images: ${{ env.GITHUB_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=raw,value=python${{ matrix.python_version }}-{{date 'YYYYMMDD-HHmmss'}}
-            type=raw,value=python${{ matrix.python_version }}-latest
-            type=raw,value=python${{ matrix.python_version }}
+            type=raw,value=python${{ matrix.python_version }}-${{ matrix.ansible_full_version }}-{{date 'YYYYMMDD-HHmmss'}}
+            type=raw,value=python${{ matrix.python_version }}-${{ matrix.ansible_full_version }}-latest
+            type=raw,value=python${{ matrix.python_version }}-${{ matrix.ansible_full_version }}
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Copy appropriate requirements file to build context
         run: |
-          cat requirements-${{ matrix.python_version }}.txt requirements-common.txt > requirements.txt
+          cat requirements-${{ matrix.requirements_file }}.txt requirements-common.txt > requirements.txt
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./dockerfiles/Dockerfile.python${{ matrix.python_version }}
+          file: ./dockerfiles/Dockerfile.ansible${{ matrix.ansible_version }}
           platforms: linux/amd64
           push: true
           tags: ${{ steps.meta.outputs.tags }}

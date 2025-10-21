@@ -21,8 +21,6 @@ All images are based on Alpine Linux for minimal size and maximum efficiency.
 | 3.10 | Alpine 3.18 | `docker pull ghcr.io/ginanck/molecule-runner:python3.10` |
 | 3.9  | Alpine 3.18 | `docker pull ghcr.io/ginanck/molecule-runner:python3.9` |
 | 3.8  | Alpine 3.18 | `docker pull ghcr.io/ginanck/molecule-runner:python3.8` |
-| 3.7  | Alpine 3.16 | `docker pull ghcr.io/ginanck/molecule-runner:python3.7` |
-| 3.6  | Alpine 3.15 | `docker pull ghcr.io/ginanck/molecule-runner:python3.6` |
 
 ### Alternative Tags
 
@@ -80,7 +78,7 @@ Each image includes:
 
    ```bash
    # Build script for all Python versions
-   for version in 3.6 3.7 3.8 3.9 3.10 3.11 3.12; do
+   for version in 3.8 3.9 3.10 3.11 3.12; do
      echo "Building Python $version image..."
      cat requirements-$version.txt requirements-common.txt > dockerfiles/requirements.txt
      docker build -f dockerfiles/Dockerfile.python$version \

@@ -1,0 +1,50 @@
+FROM python:3.12-alpine3.18
+
+LABEL maintainer="ginanck"
+LABEL description="Ultra-lightweight Molecule testing environment with Python 3.12 and Ansible 2.15.13"
+LABEL python.version="3.12"
+LABEL ansible.version="2.15.13"
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# Install minimal system dependencies and build tools temporarily
+RUN apk add --no-cache \
+        bash \
+        git \
+        openssh-client \
+        docker-cli \
+        ca-certificates \
+        py3-cryptography \
+        py3-yaml \
+        py3-jinja2 \
+        py3-packaging \
+    && pip install --upgrade pip setuptools wheel
+
+# Copy requirements files
+COPY requirements.txt /tmp/
+
+# Install Python packages
+RUN pip install --no-cache-dir -r /tmp/requirements.txt \
+    && rm -f /tmp/requirements.txt \
+    && rm -rf /root/.cache
+
+# Create ansible user and directories
+RUN addgroup -g 1000 ansible \
+    && adduser -D -u 1000 -G ansible ansible \
+    && mkdir -p /home/ansible/.ansible/collections \
+    && chown -R ansible:ansible /home/ansible
+
+# Switch to ansible user and install essential collections
+USER ansible
+RUN ansible-galaxy collection install git+https://github.com/ansible-collections/community.docker.git,4.8.1
+
+# Set working directory and switch back to root for GitHub Actions compatibility
+WORKDIR /workspace
+USER root
+
+# Set default command
+CMD ["/bin/bash"]
