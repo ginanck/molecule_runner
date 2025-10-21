@@ -15,6 +15,7 @@ ENV PYTHONUNBUFFERED=1 \
 RUN apk add --no-cache \
         bash \
         git \
+        curl \
         openssh-client \
         docker-cli \
         ca-certificates \
