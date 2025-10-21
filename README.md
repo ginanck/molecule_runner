@@ -14,38 +14,38 @@ Lightweight Alpine Linux-based Docker images optimized for Ansible Molecule test
 
 All images are based on Alpine Linux for minimal size and maximum efficiency.
 
-| Python Version | Base Image | Docker Pull Command |
-|----------------|------------|---------------------|
-| 3.12 | Alpine 3.18 | `docker pull ghcr.io/ginanck/molecule-runner:python3.12` |
-| 3.11 | Alpine 3.18 | `docker pull ghcr.io/ginanck/molecule-runner:python3.11` |
-| 3.10 | Alpine 3.18 | `docker pull ghcr.io/ginanck/molecule-runner:python3.10` |
-| 3.9  | Alpine 3.18 | `docker pull ghcr.io/ginanck/molecule-runner:python3.9` |
-| 3.8  | Alpine 3.18 | `docker pull ghcr.io/ginanck/molecule-runner:python3.8` |
+| Python Version | Ansible Version | Docker Tags |
+|---------------|----------------|-------------------------------------------------------------------|
+| 3.12          | 2.15.13        | `latest`, `python3.12-2.15.13-latest`, `python3.12-2.15.13`       |
+| 3.12          | 2.14.18        | `python3.12-2.14.18-latest`, `python3.12-2.14.18`                 |
+| 3.11          | 2.13.13        | `python3.11-2.13.13-latest`, `python3.11-2.13.13`                 |
+| 3.10          | 2.12.10        | `python3.10-2.12.10-latest`, `python3.10-2.12.10`                 |
+| 3.9           | 2.11.12        | `python3.9-2.11.12-latest`, `python3.9-2.11.12`                   |
 
 ### Alternative Tags
 
-- `latest` - Points to the latest Python version (3.12)
-- `python3.X-latest` - Latest build for specific Python version
-- `python3.X-YYYYMMDD-HHmmss` - Timestamped builds for reproducibility
+- `latest` - Points to the latest Python/Ansible version (3.12 with Ansible 2.15)
+- `python3.X-ansibleY.Z-latest` - Latest build for specific Python/Ansible combination
+- `python3.X-ansibleY.Z` - Specific version tag
 
 ## Quick Start
 
 1. **Pull an image:**
 
    ```bash
-   docker pull ghcr.io/ginanck/molecule-runner:python3.10
+   docker pull ghcr.io/ginanck/molecule-runner:python3.10-2.12.10-latest
    ```
 
 2. **Run Molecule tests:**
 
    ```bash
-   docker run -it --rm -v $(pwd):/workspace -w /workspace ghcr.io/ginanck/molecule-runner:python3.10 molecule test
+   docker run -it --rm -v $(pwd):/workspace -w /workspace ghcr.io/ginanck/molecule-runner:python3.10-2.12.10-latest molecule test
    ```
 
 3. **Interactive shell:**
 
    ```bash
-   docker run -it --rm ghcr.io/ginanck/molecule-runner:python3.10 /bin/bash
+   docker run -it --rm ghcr.io/ginanck/molecule-runner:python3.10-2.12.10-latest /bin/bash
    ```
 
 ## Features
@@ -64,27 +64,12 @@ Each image includes:
 
 ### Building Images Locally
 
-1. **Build a specific Python version:**
-
    ```bash
    # Prepare requirements file
-   cat requirements-3.10.txt requirements-common.txt > dockerfiles/requirements.txt
+   cat requirements-2.12.10.txt requirements-common.txt > dockerfiles/requirements.txt
    
    # Build the image
-   docker build -f dockerfiles/Dockerfile.python3.10 -t molecule-runner:python3.10 dockerfiles/
-   ```
-
-2. **Build all images:**
-
-   ```bash
-   # Build script for all Python versions
-   for version in 3.8 3.9 3.10 3.11 3.12; do
-     echo "Building Python $version image..."
-     cat requirements-$version.txt requirements-common.txt > dockerfiles/requirements.txt
-     docker build -f dockerfiles/Dockerfile.python$version \
-       -t ghcr.io/ginanck/molecule-runner:python$version \
-       dockerfiles/
-   done
+   docker build -f dockerfiles/Dockerfile.ansible2.12 -t molecule-runner:python3.10-2.12.10-latest dockerfiles/
    ```
 
 ### Testing Images
@@ -93,7 +78,7 @@ Test a built image with a simple Molecule command:
 
 ```bash
 docker run --rm -v $(pwd):/workspace -w /workspace \
-  ghcr.io/ginanck/molecule-runner:python3.10 \
+  ghcr.io/ginanck/molecule-runner:python3.10-2.12.10-latest \
   molecule --version
 ```
 
@@ -107,9 +92,9 @@ The repository uses GitHub Actions to automatically build and push images to Git
 
 Images are tagged with:
 
-- `python3.X` - Latest for that Python version
-- `python3.X-latest` - Alias for latest
-- `python3.X-YYYYMMDD-HHmmss` - Timestamped builds
+- `python3.X-ansibleY.Z-latest` - Latest for that Python/Ansible combination
+- `python3.X-ansibleY.Z` - Specific version for that combination
+- `latest` - Latest overall (Python 3.12 with Ansible 2.15)
 
 ## License
 
