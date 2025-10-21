@@ -108,27 +108,38 @@ jobs:
           - python_version: '3.9'
             ansible_version: '2.11'
             ansible_full_version: '2.11.12'
-            tags: 'python3.9-2.11.12-latest,python3.9-2.11.12'
+            tags: |
+              type=raw,value=python3.9-2.11.12-latest
+              type=raw,value=python3.9-2.11.12
 
           - python_version: '3.10'
             ansible_version: '2.12'
             ansible_full_version: '2.12.10'
-            tags: 'python3.10-2.12.10-latest,python3.10-2.12.10'
+            tags: |
+              type=raw,value=python3.10-2.12.10-latest
+              type=raw,value=python3.10-2.12.10
 
           - python_version: '3.11'
             ansible_version: '2.13'
             ansible_full_version: '2.13.13'
-            tags: 'python3.11-2.13.13-latest,python3.11-2.13.13'
+            tags: |
+              type=raw,value=python3.11-2.13.13-latest
+              type=raw,value=python3.11-2.13.13
 
           - python_version: '3.12'
             ansible_version: '2.14'
             ansible_full_version: '2.14.18'
-            tags: 'python3.12-2.14.18-latest,python3.12-2.14.18'
+            tags: |
+              type=raw,value=python3.12-2.14.18-latest
+              type=raw,value=python3.12-2.14.18
 
           - python_version: '3.12'
             ansible_version: '2.15'
             ansible_full_version: '2.15.13'
-            tags: 'python3.12-2.15.13-latest,python3.12-2.15.13,latest'
+            tags: |
+              type=raw,value=python3.12-2.15.13-latest
+              type=raw,value=python3.12-2.15.13
+              type=raw,value=latest
 
     steps:
       - name: Checkout repository
@@ -150,8 +161,7 @@ jobs:
         with:
           images: ${{ env.GITHUB_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{ matrix.version }}
-            ${{ matrix.tags && format('type=raw,value={0}', matrix.tags) }}
+            ${{ matrix.tags }}
 
       - name: Copy appropriate requirements file to build context
         run: |
