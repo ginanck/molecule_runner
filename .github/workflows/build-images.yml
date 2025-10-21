@@ -92,7 +92,6 @@ jobs:
           push: false
           load: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -162,9 +161,6 @@ jobs:
           images: ${{ env.GITHUB_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}
           tags: |
             ${{ matrix.tags }}
-          labels: |
-            org.opencontainers.image.source=https://github.com/ginanck/molecule_runner
-            org.opencontainers.image.description=Alpine-based Docker images for Ansible Molecule testing
 
       - name: Copy appropriate requirements file to build context
         run: |
@@ -178,6 +174,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

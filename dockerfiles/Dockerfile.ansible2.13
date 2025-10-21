@@ -1,7 +1,7 @@
 FROM python:3.11-alpine3.18
 
-LABEL maintainer="ginanck"
-LABEL description="Ultra-lightweight Molecule testing environment with Python 3.11 and Ansible 2.13.13"
+LABEL org.opencontainers.image.source https://github.com/ginanck/molecule_runner
+LABEL org.opencontainers.image.description="Ultra-lightweight Molecule testing environment with Python 3.11 and Ansible 2.13.13"
 LABEL python.version="3.11"
 LABEL ansible.version="2.13.13"
 
