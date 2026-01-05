@@ -2,6 +2,7 @@
 # Core Ansible and Molecule tools
 ansible-compat
 ansible-lint
+docsible
 flake8
 yamllint
 molecule
