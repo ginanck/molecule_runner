@@ -1,0 +1,10 @@
+# Pinned Molecule toolchain for ansible-core 2.18 and newer.
+# Verified against ansible-core 2.21 in the control repo venv.
+molecule==26.10.0
+molecule-plugins[docker]==26.10.12
+ansible-compat==26.10.0
+ansible-lint==26.1.0
+yamllint==1.37.1
+docker==7.2.0
+requests
+urllib3

@@ -1,0 +1,43 @@
+FROM python:3.12-alpine3.21
+
+LABEL org.opencontainers.image.source=https://github.com/ginanck/molecule_runner
+LABEL org.opencontainers.image.description="Molecule runner with Python 3.12 and ansible-core 2.20"
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    ANSIBLE_COLLECTIONS_PATH=/usr/share/ansible/collections
+
+RUN apk add --no-cache \
+        bash \
+        git \
+        curl \
+        openssh-client \
+        docker-cli \
+        ca-certificates \
+        py3-cryptography \
+        py3-yaml \
+        py3-jinja2 \
+        py3-packaging \
+        py3-pip \
+        py3-setuptools \
+        py3-wheel \
+    && rm -rf /var/cache/apk/*
+
+COPY requirements.txt /tmp/
+COPY requirements-modern.txt /tmp/
+
+RUN pip install --no-cache-dir -r /tmp/requirements.txt -r /tmp/requirements-modern.txt \
+    && rm -f /tmp/requirements.txt /tmp/requirements-modern.txt \
+    && rm -rf /root/.cache
+
+RUN ansible-galaxy collection install \
+        community.docker:4.8.1 \
+        ansible.posix:2.2.2 \
+        -p /usr/share/ansible/collections
+
+WORKDIR /workspace
+USER root
+
+CMD ["/bin/bash"]

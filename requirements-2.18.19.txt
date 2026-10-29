@@ -1,0 +1,2 @@
+# ansible-core pin for the modern Molecule runner
+ansible-core==2.18.19

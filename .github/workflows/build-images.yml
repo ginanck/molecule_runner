@@ -46,22 +46,46 @@ jobs:
           - python_version: '3.9'
             ansible_version: '2.11'
             ansible_full_version: '2.11.12'
+            common: requirements-common.txt
 
           - python_version: '3.10'
             ansible_version: '2.12'
             ansible_full_version: '2.12.10'
+            common: requirements-common.txt
 
           - python_version: '3.11'
             ansible_version: '2.13'
             ansible_full_version: '2.13.13'
+            common: requirements-common.txt
 
           - python_version: '3.12'
             ansible_version: '2.14'
             ansible_full_version: '2.14.18'
+            common: requirements-common.txt
 
           - python_version: '3.12'
             ansible_version: '2.15'
             ansible_full_version: '2.15.13'
+            common: requirements-common.txt
+          - python_version: '3.12'
+            ansible_version: '2.18'
+            ansible_full_version: '2.18.19'
+            common: requirements-modern.txt
+
+          - python_version: '3.12'
+            ansible_version: '2.19'
+            ansible_full_version: '2.19.14'
+            common: requirements-modern.txt
+
+          - python_version: '3.12'
+            ansible_version: '2.20'
+            ansible_full_version: '2.20.10'
+            common: requirements-modern.txt
+
+          - python_version: '3.12'
+            ansible_version: '2.21'
+            ansible_full_version: '2.21.5'
+            common: requirements-modern.txt
 
     steps:
       - name: Checkout repository
@@ -81,7 +105,7 @@ jobs:
 
       - name: Copy appropriate requirements file to build context
         run: |
-          cat requirements-${{ matrix.ansible_full_version }}.txt requirements-common.txt > requirements.txt
+          cat requirements-${{ matrix.ansible_full_version }}.txt ${{ matrix.common || 'requirements-common.txt' }} > requirements.txt
 
       - name: Build Docker image (PR - No Push)
         uses: docker/build-push-action@v5
@@ -114,6 +138,7 @@ jobs:
           - python_version: '3.10'
             ansible_version: '2.12'
             ansible_full_version: '2.12.10'
+            common: requirements-common.txt
             tags: |
               type=raw,value=python3.10-2.12.10-latest
               type=raw,value=python3.10-2.12.10
@@ -121,6 +146,7 @@ jobs:
           - python_version: '3.11'
             ansible_version: '2.13'
             ansible_full_version: '2.13.13'
+            common: requirements-common.txt
             tags: |
               type=raw,value=python3.11-2.13.13-latest
               type=raw,value=python3.11-2.13.13
@@ -128,6 +154,7 @@ jobs:
           - python_version: '3.12'
             ansible_version: '2.14'
             ansible_full_version: '2.14.18'
+            common: requirements-common.txt
             tags: |
               type=raw,value=python3.12-2.14.18-latest
               type=raw,value=python3.12-2.14.18
@@ -135,9 +162,42 @@ jobs:
           - python_version: '3.12'
             ansible_version: '2.15'
             ansible_full_version: '2.15.13'
+            common: requirements-common.txt
             tags: |
               type=raw,value=python3.12-2.15.13-latest
               type=raw,value=python3.12-2.15.13
+
+          - python_version: '3.12'
+            ansible_version: '2.18'
+            ansible_full_version: '2.18.19'
+            common: requirements-modern.txt
+            tags: |
+              type=raw,value=python3.12-2.18.19-latest
+              type=raw,value=python3.12-2.18.19
+
+          - python_version: '3.12'
+            ansible_version: '2.19'
+            ansible_full_version: '2.19.14'
+            common: requirements-modern.txt
+            tags: |
+              type=raw,value=python3.12-2.19.14-latest
+              type=raw,value=python3.12-2.19.14
+
+          - python_version: '3.12'
+            ansible_version: '2.20'
+            ansible_full_version: '2.20.10'
+            common: requirements-modern.txt
+            tags: |
+              type=raw,value=python3.12-2.20.10-latest
+              type=raw,value=python3.12-2.20.10
+
+          - python_version: '3.12'
+            ansible_version: '2.21'
+            ansible_full_version: '2.21.5'
+            common: requirements-modern.txt
+            tags: |
+              type=raw,value=python3.12-2.21.5-latest
+              type=raw,value=python3.12-2.21.5
               type=raw,value=latest
 
     steps:
@@ -164,7 +224,7 @@ jobs:
 
       - name: Copy appropriate requirements file to build context
         run: |
-          cat requirements-${{ matrix.ansible_full_version }}.txt requirements-common.txt > requirements.txt
+          cat requirements-${{ matrix.ansible_full_version }}.txt ${{ matrix.common || 'requirements-common.txt' }} > requirements.txt
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
